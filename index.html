@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health & Well-Being: Small Habits, Big Changes</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #3b82f6;
+      --accent: #10b981;
+      --dark-bg: #0f172a;
+      --light-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--light-bg);
+      color: var(--text);
+    }
+
+    /* Encabezado Institucional */
+    header {
+      background: linear-gradient(135deg, var(--primary), #1e1b4b);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.3rem;
+      letter-spacing: 1px;
+    }
+
+    header h2 {
+      margin: 8px 0 0;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #93c5fd;
+    }
+
+    .institutional-info {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      max-width: 900px;
+      margin: 20px auto 0;
+      padding: 15px 20px;
+      border-radius: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 12px;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+
+    .institutional-info div {
+      margin: 2px 10px;
+    }
+
+    .institutional-info strong {
+      color: #60a5fa;
+    }
+
+    /* Menú de Navegación */
+    nav {
+      background-color: var(--dark-bg);
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .nav-btn {
+      background-color: var(--dark-bg);
+      color: white;
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .nav-btn:hover {
+      background-color: var(--secondary);
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #ffffff;
+      min-width: 320px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1001;
+      border-radius: 0 0 8px 8px;
+      overflow: hidden;
+    }
+
+    .dropdown-content a {
+      color: var(--text);
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 13.5px;
+      border-bottom: 1px solid #e2e8f0;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #eff6ff;
+      color: var(--secondary);
+      font-weight: bold;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    /* Tarjetas de Contenido */
+    .activity-card, .overview-card, .quiz-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 35px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border-left: 6px solid var(--secondary);
+      scroll-margin-top: 80px;
+    }
+
+    .activity-card h3, .overview-card h3, .quiz-card h2 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+
+    .embed-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      border-radius: 8px;
+      background: #e2e8f0;
+      margin-top: 15px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .embed-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .btn-action {
+      display: inline-block;
+      background-color: var(--accent);
+      color: white;
+      text-decoration: none;
+      padding: 12px 22px;
+      border-radius: 6px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 15px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-action:hover {
+      background-color: #059669;
+    }
+
+    .btn-quiz-launch {
+      background-color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-quiz-launch:hover {
+      background-color: var(--secondary);
+    }
+
+    /* Estilos de la Ruleta Interactiva */
+    .wheel-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    .wheel-pointer {
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 30px solid #ef4444;
+      position: relative;
+      z-index: 10;
+      margin-bottom: -15px;
+      filter: drop-shadow(0px 3px 2px rgba(0,0,0,0.3));
+    }
+
+    canvas.wheel-canvas {
+      border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      background: #ffffff;
+    }
+
+    .question-display {
+      margin-top: 25px;
+      padding: 18px 24px;
+      background: #eff6ff;
+      border: 2px dashed var(--secondary);
+      border-radius: 10px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: var(--primary);
+      text-align: center;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Estilos Pruebas ICFES */
+    .icfes-context {
+      background: #f1f5f9;
+      border-left: 4px solid var(--primary);
+      padding: 15px 20px;
+      margin: 15px 0 25px 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+
+    .question-block {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--dark-bg);
+    }
+
+    .quiz-option {
+      display: block;
+      margin: 8px 0;
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-option:hover {
+      background: #eff6ff;
+      border-color: var(--secondary);
+    }
+
+    .quiz-option input {
+      margin-right: 10px;
+    }
+
+    /* Panel de Resultados */
+    .results-box {
+      display: none;
+      background: #0f172a;
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 25px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .score-badge {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #34d399;
+      margin: 15px 0;
+    }
+
+    .level-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      background: var(--secondary);
+      border-radius: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--dark-bg);
+      color: white;
+      margin-top: 50px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado Institucional -->
+  <header>
+    <h1>Health and Well-Being</h1>
+    <h2>Small Habits, Big Changes</h2>
+    
+    <div class="institutional-info">
+      <div><strong>Autor / Docente en formación:</strong> Edwin Lobón Albán[cite: 9, 10]</div>
+      <div><strong>Tutor Académico:</strong> Martha Beatriz Palma Cervantes</div>
+      <div><strong>Escenario de Práctica:</strong> SINEP - Universidad Nacional Abierta y a Distancia (UNAD)</div>
+      <div><strong>Población:</strong> Jóvenes y adultos en modalidad virtual de aprendizaje autónomo.</div>
+    </div>
+  </header>
+
+  <!-- Menú de Navegación -->
+  <nav>
+    <button class="nav-btn" onclick="showSection('overview')">📌 COURSE OVERVIEW</button>
+
+    <div class="dropdown">
+      <button class="nav-btn" onclick="showSection('lesson1')">🟢 LESSON 1: Physical Health ▼</button>
+      <div class="dropdown-content">
+        <a href="#vark" onclick="showSection('lesson1')">0. Skill Recognition (VARK Test)</a>
+        <a href="#l1-warmup" onclick="showSection('lesson1')">1. Warm-up (Random Wheel)</a>
+        <a href="#l1-video" onclick="showSection('lesson1')">2. Video Presentation (Educaplay)</a>
+        <a href="#l1-practice" onclick="showSection('lesson1')">3. Practice (Categorization Task)</a>
+        <a href="#l1-writing" onclick="showSection('lesson1')">4. Production (Written Routine)</a>
+        <a href="#l1-music" onclick="showSection('lesson1')">5. Enjoy Listening (Music Activity)</a>
+        <a href="#icfes1" onclick="showSection('icfes1')">6. ICFES Assessment L1 📝</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="nav-btn" onclick="showSection('lesson2')">🔵 LESSON 2: Mental Health & Advice ▼</button>
+      <div class="dropdown-content">
+        <a href="#l2-warmup" onclick="showSection('lesson2')">1. Warm-up (Random Wheel)</a>
+        <a href="#l2-grammar" onclick="showSection('lesson2')">2. Practice - Modal Verbs (Kahoot!)</a>
+        <a href="#l2-dialogue" onclick="showSection('lesson2')">3. Dialogue Fill-in-Blanks (Educaplay)</a>
+        <a href="#l2-speaking" onclick="showSection('lesson2')">4. Speaking & Role-Play Activity</a>
+        <a href="#l2-music" onclick="showSection('lesson2')">5. Music Break ("Changes")</a>
+        <a href="#icfes2" onclick="showSection('icfes2')">6. ICFES Assessment L2 📝</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- ================= VISTA: OVERVIEW ================= -->
+    <div id="overview" class="page-section active">
+      <div class="overview-card">
+        <h3>👥 Caracterización de la Población</h3>
+        <p>La comunidad educativa del <b>SINEP-UNAD</b> se caracteriza por una alta heterogeneidad etaria y geográfica. La propuesta pedagógica se enfoca en:</p>
+        <ul>
+          <li><b>Mitigación del filtro afectivo:</b> mediante dinámicas gamificadas.</li>
+          <li><b>Flexibilidad cognitiva:</b> mediante el modelo multimodal VARK.</li>
+          <li><b>Fortalecimiento del aprendizaje colaborativo y autónomo.</b></li>
+        </ul>
+
+        <h3>🎯 Course Overview & Learning Objectives</h3>
+        <p>Welcome to the <b>Health and Well-Being</b> module! This course is designed to develop students' English communicative competence through meaningful contexts related to daily habits, physical wellness, stress management, and emotional support.</p>
+        
+        <h4>Lesson 1 Objectives: Physical Health & Daily Routines</h4>
+        <ul>
+          <li>Identify key vocabulary related to physical health, nutrition, and workout routines[cite: 10].</li>
+          <li>Recognize how daily physical choices impact long-term health and well-being[cite: 10].</li>
+          <li>Describe personal daily routines using target action verbs in written and oral format[cite: 10].</li>
+        </ul>
+
+        <h4>Lesson 2 Objectives: Mental Health, Stress & Expressing Advice</h4>
+        <ul>
+          <li>Learn and correctly apply modal verbs for giving advice (<i>should, ought to, could, would</i>)[cite: 9].</li>
+          <li>Understand stress management vocabulary and conduct personal stress self-assessments[cite: 9].</li>
+          <li>Provide constructive and polite recommendations to peers experiencing stress or anxiety[cite: 9].</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ================= VISTA: LESSON 1 ================= -->
+    <div id="lesson1" class="page-section">
+      
+      <div id="vark" class="activity-card">
+        <h3>🎯 Activity 0: Skill Recognition & Learning Styles Test (VARK)</h3>
+        <p>Before starting, complete the VARK learning styles test to discover your ideal learning modality (Visual, Aural, Read/Write, Kinesthetic)[cite: 10].</p>
+        <div class="embed-container">
+          <iframe src="https://vark-learn.com/the-vark-questionnaire/" title="VARK Test"></iframe>
+        </div>
+      </div>
+
+      <!-- RULETA DINÁMICA - LESSON 1 -->
+      <div id="l1-warmup" class="activity-card">
+        <h3>🔄 Activity 1: Warm-up - Dynamic Interactive Wheel</h3>
+        <p>Click <b>SPIN THE WHEEL</b> to select a question about your daily habits and answer out loud[cite: 10]!</p>
+        
+        <div class="wheel-wrapper">
+          <div class="wheel-pointer"></div>
+          <canvas id="wheelCanvas1" class="wheel-canvas" width="360" height="360"></canvas>
+          <button class="btn-action" style="background-color: var(--secondary);" onclick="spinWheel(1)">🎯 SPIN THE WHEEL</button>
+          <div id="wheelResult1" class="question-display">Click SPIN to reveal your question!</div>
+        </div>
+      </div>
+
+      <div id="l1-video" class="activity-card">
+        <h3>🎥 Activity 2: Presentation - Educaplay Interactive Video</h3>
+        <p>Watch the interactive video quiz on daily routines and answer the questions embedded directly in the timeline[cite: 10].</p>
+        <div class="embed-container">
+          <iframe src="https://es.educaplay.com/recursos-educativos/30577463-physical_health_daily_routines.html" title="Educaplay Video Quiz"></iframe>
+        </div>
+      </div>
+
+      <div id="l1-practice" class="activity-card">
+        <h3>📊 Activity 3: Practice - Wordwall Categorization Task</h3>
+        <p>Drag and classify daily habits into <i>Healthy Habits</i>, <i>Unhealthy Habits</i>, or <i>Neutral Habits</i>[cite: 10].</p>
+        <div class="embed-container">
+          <iframe src="https://wordwall.net/embed/resource/118984185/healthy-habits-unhealthy-habits-and-neutral-habits?wwmethod=link&wwshareintent=student" title="Categorization Activity"></iframe>
+        </div>
+      </div>
+
+      <div id="l1-writing" class="activity-card">
+        <h3>📝 Activity 4: Production - Written Routine & Chat Discussion</h3>
+        <p>Take 5 minutes to write a 5-line paragraph describing your ideal healthy daily routine on Padlet or Teams Chat, then share orally[cite: 10].</p>
+        <div class="embed-container">
+          <iframe src="https://padlet.com/edwinlobon/mi-padlet-sublime-s023upzpn0iwm6kceluu" title="Padlet Workspace"></iframe>
+        </div>
+      </div>
+
+      <div id="l1-music" class="activity-card">
+        <h3>🎧 Activity 5: Enjoy Listening - "I Don't Care" (Ed Sheeran & Justin Bieber)</h3>
+        <p>Improve your listening skills and vocabulary through the interactive music lesson on LingoClip[cite: 10].</p>
+        <div class="embed-container">
+          <iframe src="https://lingoclip.app/ly/mVAXwD4" title="LingoClip Music"></iframe>
+        </div>
+      </div>
+
+      <div class="activity-card" style="border-left-color: var(--primary);">
+        <h3>📋 Activity 6: Formative Assessment - ICFES English Test L1</h3>
+        <p>Accede al cuestionario dinámico evaluativo diseñado en formato Saber 11 / ICFES para evaluar tus conocimientos de la Lección 1[cite: 10].</p>
+        <button class="btn-action btn-quiz-launch" onclick="showSection('icfes1')">🚀 Iniciar ICFES Test - Lesson 1</button>
+      </div>
+
+    </div>
+
+    <!-- ================= VISTA: LESSON 2 ================= -->
+    <div id="lesson2" class="page-section">
+      
+      <!-- RULETA DINÁMICA - LESSON 2 -->
+      <div id="l2-warmup" class="activity-card">
+        <h3>🧘 Activity 1: Warm-up - Mental Health & Stress Wheel</h3>
+        <p>Click <b>SPIN THE WHEEL</b> to get a stress-management reflection question and answer using modal verbs (<i>should, could, would</i>)[cite: 9]!</p>
+        
+        <div class="wheel-wrapper">
+          <div class="wheel-pointer"></div>
+          <canvas id="wheelCanvas2" class="wheel-canvas" width="360" height="360"></canvas>
+          <button class="btn-action" style="background-color: var(--secondary);" onclick="spinWheel(2)">🎯 SPIN THE WHEEL</button>
+          <div id="wheelResult2" class="question-display">Click SPIN to reveal your question!</div>
+        </div>
+      </div>
+
+      <div id="l2-grammar" class="activity-card">
+        <h3>🎮 Activity 2: Practice - Modal Verbs on Kahoot!</h3>
+        <p>Participate in the Kahoot challenge to practice modal verbs for giving advice (<i>should, could, would</i>)[cite: 9].</p>
+        <div class="embed-container">
+          <iframe src="https://create.kahoot.it/share/advices-for-stress-and-anxiety/3df25fa1-c8e1-4e8d-9a9d-73bac0790e6c" title="Kahoot Activity"></iframe>
+        </div>
+      </div>
+
+      <div id="l2-dialogue" class="activity-card">
+        <h3>✏️ Activity 3: Practice - Dialogue Fill-in-the-Blanks (Educaplay)</h3>
+        <p>Fill in the blank spaces in the stress advice dialogue using correct modal verbs[cite: 9].</p>
+        <div class="embed-container">
+          <iframe src="https://es.educaplay.com/recursos-educativos/30579836-fill_in_the_blank_spaces.html" title="Educaplay Activity"></iframe>
+        </div>
+      </div>
+
+      <div id="l2-speaking" class="activity-card">
+        <h3>🗣️ Activity 4: Production - Peer Advice Role-Play</h3>
+        <p>Imagine your friend is stressed due to upcoming exams[cite: 9]. Write 3 recommendations using sentence starters and prepare to speak out loud[cite: 9]:</p>
+        <ul>
+          <li><i>First, you should...</i>[cite: 9]</li>
+          <li><i>You could also...</i>[cite: 9]</li>
+          <li><i>If I were you, I would...</i>[cite: 9]</li>
+        </ul>
+      </div>
+
+      <div id="l2-music" class="activity-card">
+        <h3>🎵 Activity 5: Music Break - "Changes" by Justin Bieber</h3>
+        <p>Sing along and learn English in context with Justin Bieber's music video[cite: 9].</p>
+        <div class="embed-container">
+          <iframe src="https://lingoclip.app/ly/ozzxG2o" title="Justin Bieber LingoClip"></iframe>
+        </div>
+      </div>
+
+      <div class="activity-card" style="border-left-color: var(--primary);">
+        <h3>📋 Activity 6: Formative Assessment - ICFES English Test L2</h3>
+        <p>Accede al cuestionario dinámico evaluativo diseñado en formato Saber 11 / ICFES para evaluar tus conocimientos de la Lección 2[cite: 9].</p>
+        <button class="btn-action btn-quiz-launch" onclick="showSection('icfes2')">🚀 Iniciar ICFES Test - Lesson 2</button>
+      </div>
+
+    </div>
+
+    <!-- ================= VISTA: EVALUACION ICFES LESSON 1 ================= -->
+    <div id="icfes1" class="page-section">
+      <div class="quiz-card">
+        <h2>🇨🇴 PRUEBA ICFES SABER 11 - LESSON 1: PHYSICAL HEALTH</h2>
+        <p>Responde las 5 preguntas de opción múltiple con única respuesta basadas en lectura comprensiva y gramática en contexto.</p>
+        
+        <div class="icfes-context">
+          <strong>READING TEXT:</strong><br>
+          "Sarah wakes up at 6:00 AM every single day. Before having breakfast, she drinks two glasses of water and goes for a 30-minute jog in the park. She believes that small morning routines transform overall health. Later, she prepares a meal rich in proteins and fiber, avoiding processed sugar. Sarah rarely feels tired during her workday."
+        </div>
+
+        <form id="form-icfes-1">
+          <div class="question-block">
+            <div class="question-title">1. What is Sarah's immediate action after waking up?</div>
+            <label class="quiz-option"><input type="radio" name="l1q1" value="0"> A) Preparing a heavy protein meal.</label>
+            <label class="quiz-option"><input type="radio" name="l1q1" value="100"> B) Drinking water and running for half an hour.</label>
+            <label class="quiz-option"><input type="radio" name="l1q1" value="0"> C) Avoiding breakfast to save time.</label>
+            <label class="quiz-option"><input type="radio" name="l1q1" value="0"> D) Sleeping for an extra 30 minutes.</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">2. According to the text, what does Sarah restrict in her daily diet?</div>
+            <label class="quiz-option"><input type="radio" name="l1q2" value="100"> A) Processed sugar.</label>
+            <label class="quiz-option"><input type="radio" name="l1q2" value="0"> B) Natural fiber.</label>
+            <label class="quiz-option"><input type="radio" name="l1q2" value="0"> C) Fresh water.</label>
+            <label class="quiz-option"><input type="radio" name="l1q2" value="0"> D) Morning protein.</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">3. Complete the sentence: "If you want to build a healthy lifestyle, you _____ practice physical activity consistently."</div>
+            <label class="quiz-option"><input type="radio" name="l1q3" value="0"> A) doesn't need</label>
+            <label class="quiz-option"><input type="radio" name="l1q3" value="100"> B) must</label>
+            <label class="quiz-option"><input type="radio" name="l1q3" value="0"> C) shouldn't never</label>
+            <label class="quiz-option"><input type="radio" name="l1q3" value="0"> D) skipped</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">4. Which of the following is categorized as an 'Unhealthy Habit'?</div>
+            <label class="quiz-option"><input type="radio" name="l1q4" value="0"> A) Sleeping 8 hours daily.</label>
+            <label class="quiz-option"><input type="radio" name="l1q4" value="0"> B) Drinking 2 liters of water.</label>
+            <label class="quiz-option"><input type="radio" name="l1q4" value="100"> C) Consuming fast food late at night regularly.</label>
+            <label class="quiz-option"><input type="radio" name="l1q4" value="0"> D) Stretching before exercising.</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">5. What is the synonym of 'jogging' in the context of physical activity?</div>
+            <label class="quiz-option"><input type="radio" name="l1q5" value="100"> A) Running at a gentle, steady pace.</label>
+            <label class="quiz-option"><input type="radio" name="l1q5" value="0"> B) Sitting quietly outdoors.</label>
+            <label class="quiz-option"><input type="radio" name="l1q5" value="0"> C) Eating breakfast rapidly.</label>
+            <label class="quiz-option"><input type="radio" name="l1q5" value="0"> D) Sleeping deeply.</label>
+          </div>
+
+          <button type="button" class="btn-action" onclick="calculateICFES('form-icfes-1', 'results-icfes-1')">Calcular Resultado ICFES</button>
+        </form>
+
+        <div id="results-icfes-1" class="results-box">
+          <h2>📊 RESULTADOS PRUEBA SABER 11 - LESSON 1</h2>
+          <div class="score-badge" id="score-val-1">0 / 500</div>
+          <div class="level-badge" id="level-val-1">Nivel: A1</div>
+          <p id="feedback-val-1"></p>
+          <button class="btn-action" style="background:var(--secondary);" onclick="showSection('lesson1')">Volver a la Lección 1</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VISTA: EVALUACION ICFES LESSON 2 ================= -->
+    <div id="icfes2" class="page-section">
+      <div class="quiz-card">
+        <h2>🇨🇴 PRUEBA ICFES SABER 11 - LESSON 2: MENTAL HEALTH & ADVICE</h2>
+        <p>Responde las 5 preguntas contextualizadas sobre manejo del estrés, ansiedad y uso correcto de verbos modales.</p>
+
+        <div class="icfes-context">
+          <strong>READING TEXT:</strong><br>
+          "Academic pressure often triggers anxiety in students. Psychologist Dr. Miller suggests that when individuals feel overwhelmed, they shouldn't isolate themselves. Instead, they could talk to a trusted friend or counselor. Furthermore, practicing deep breathing exercises for five minutes can instantly calm the nervous system."
+        </div>
+
+        <form id="form-icfes-2">
+          <div class="question-block">
+            <div class="question-title">1. What is Dr. Miller's advice when a student feels overwhelmed?</div>
+            <label class="quiz-option"><input type="radio" name="l2q1" value="0"> A) They must isolate themselves in a quiet room.</label>
+            <label class="quiz-option"><input type="radio" name="l2q1" value="100"> B) They should communicate with a friend or counselor.</label>
+            <label class="quiz-option"><input type="radio" name="l2q1" value="0"> C) They ought to stop studying permanently.</label>
+            <label class="quiz-option"><input type="radio" name="l2q1" value="0"> D) They would ignore their feelings.</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">2. Student A: "I have three exams tomorrow and I can't concentrate!" <br> Student B: "If I were you, I _____ take a short walk to clear my mind."</div>
+            <label class="quiz-option"><input type="radio" name="l2q2" value="100"> A) would</label>
+            <label class="quiz-option"><input type="radio" name="l2q2" value="0"> B) will</label>
+            <label class="quiz-option"><input type="radio" name="l2q2" value="0"> C) musted</label>
+            <label class="quiz-option"><input type="radio" name="l2q2" value="0"> D) shoulded</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">3. Which sentence correctly uses a modal verb to express polite advice?</div>
+            <label class="quiz-option"><input type="radio" name="l2q3" value="0"> A) You must to sleep right now!</label>
+            <label class="quiz-option"><input type="radio" name="l2q3" value="100"> B) You could try listening to relaxing music before sleeping.</label>
+            <label class="quiz-option"><input type="radio" name="l2q3" value="0"> C) You shoulding drink coffee.</label>
+            <label class="quiz-option"><input type="radio" name="l2q3" value="0"> D) You ought take a rest.</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">4. According to the reading, what quick activity can calm the nervous system?</div>
+            <label class="quiz-option"><input type="radio" name="l2q4" value="100"> A) Practicing 5 minutes of deep breathing exercises.</label>
+            <label class="quiz-option"><input type="radio" name="l2q4" value="0"> B) Studying continuously without breaks.</label>
+            <label class="quiz-option"><input type="radio" name="l2q4" value="0"> C) Using social media for hours.</label>
+            <label class="quiz-option"><input type="radio" name="l2q4" value="0"> D) Drinking high-energy beverages.</label>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">5. What is the main purpose of using modal verbs like 'should' and 'could' in daily conversation?</div>
+            <label class="quiz-option"><input type="radio" name="l2q5" value="0"> A) To express past completed actions.</label>
+            <label class="quiz-option"><input type="radio" name="l2q5" value="100"> B) To offer recommendations, advice, and possibilities politely.</label>
+            <label class="quiz-option"><input type="radio" name="l2q5" value="0"> C) To measure physical health strength.</label>
+            <label class="quiz-option"><input type="radio" name="l2q5" value="0"> D) To order people sternly without respect.</label>
+          </div>
+
+          <button type="button" class="btn-action" onclick="calculateICFES('form-icfes-2', 'results-icfes-2')">Calcular Resultado ICFES</button>
+        </form>
+
+        <div id="results-icfes-2" class="results-box">
+          <h2>📊 RESULTADOS PRUEBA SABER 11 - LESSON 2</h2>
+          <div class="score-badge" id="score-val-2">0 / 500</div>
+          <div class="level-badge" id="level-val-2">Nivel: A1</div>
+          <p id="feedback-val-2"></p>
+          <button class="btn-action" style="background:var(--secondary);" onclick="showSection('lesson2')">Volver a la Lección 2</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© SINEP - UNAD | Health and Well-Being Educational Module[cite: 9, 10]</p>
+  </footer>
+
+  <script>
+    function showSection(sectionId) {
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+      
+      // Renderizar la ruleta de la sección activa para evitar errores visuales
+      if (sectionId === 'lesson1') drawWheel(1);
+      if (sectionId === 'lesson2') drawWheel(2);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* SISTEMA DE RULETAS INTERACTIVAS */
+    const wheelData = {
+      1: {
+        questions: [
+          "What is 1 healthy habit you do every morning?",
+          "How many hours of sleep do you get daily?",
+          "What is your favorite physical exercise?",
+          "Name 1 unhealthy food you try to avoid.",
+          "Why is drinking water crucial for health?",
+          "How often do you go outdoors for a walk?"
+        ],
+        angle: 0,
+        isSpinning: false
+      },
+      2: {
+        questions: [
+          "What should a person do when feeling stressed?",
+          "How do you relax after a long academic day?",
+          "What could you advise a friend with insomnia?",
+          "What activity helps you reduce mental anxiety?",
+          "If you feel overwhelmed, who would you call?",
+          "Why is taking breaks important while studying?"
+        ],
+        angle: 0,
+        isSpinning: false
+      }
+    };
+
+    const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
+
+    function drawWheel(id) {
+      const canvas = document.getElementById(`wheelCanvas${id}`);
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const data = wheelData[id];
+      const numOptions = data.questions.length;
+      const arcSize = (2 * Math.PI) / numOptions;
+      const radius = canvas.width / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < numOptions; i++) {
+        const angle = i * arcSize;
+        ctx.beginPath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius - 5, angle, angle + arcSize);
+        ctx.lineTo(radius, radius);
+        ctx.fill();
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.fillStyle = "white";
+        ctx.font = "bold 13px Segoe UI";
+        ctx.translate(radius, radius);
+        ctx.rotate(angle + arcSize / 2);
+        ctx.textAlign = "right";
+        ctx.fillText(`Option ${i + 1}`, radius - 20);
+        ctx.restore();
+      }
+
+      ctx.beginPath();
+      ctx.arc(radius, radius, 25, 0, 2 * Math.PI);
+      ctx.fillStyle = "#0f172a";
+      ctx.fill();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+
+    function spinWheel(id) {
+      const data = wheelData[id];
+      const canvas = document.getElementById(`wheelCanvas${id}`);
+      if (data.isSpinning || !canvas) return;
+
+      data.isSpinning = true;
+      document.getElementById(`wheelResult${id}`).innerText = "Spinning...";
+
+      // Vueltas acumuladas aleatorias para un giro continuo
+      const randomDegrees = Math.floor(1800 + Math.random() * 1080);
+      data.angle += randomDegrees;
+
+      // Transición CSS directa para evitar bloqueos
+      canvas.style.transition = "transform 4s cubic-bezier(0.15, 0.9, 0.25, 1)";
+      canvas.style.transform = `rotate(${data.angle}deg)`;
+
+      setTimeout(() => {
+        data.isSpinning = false;
+        calculateWheelResult(id, data.angle);
+      }, 4000);
+    }
+
+    function calculateWheelResult(id, totalDegrees) {
+      const data = wheelData[id];
+      const numOptions = data.questions.length;
+      const degreesPerSlice = 360 / numOptions;
+
+      // Calibrar la aguja superior (270° / -90°)
+      const actualDegrees = (totalDegrees + 90) % 360;
+      const rawIndex = Math.floor((360 - actualDegrees) / degreesPerSlice);
+      const index = (rawIndex + numOptions) % numOptions;
+
+      document.getElementById(`wheelResult${id}`).innerText = `🎯 ${data.questions[index]}`;
+    }
+
+    // Inicializar ruletas al cargar el documento
+    window.addEventListener('DOMContentLoaded', () => {
+      drawWheel(1);
+      drawWheel(2);
+    });
+
+    /* LÓGICA DE LAS PRUEBAS ICFES */
+    function calculateICFES(formId, resultId) {
+      const form = document.getElementById(formId);
+      const inputs = form.querySelectorAll('input[type="radio"]:checked');
+      
+      if (inputs.length < 5) {
+        alert("Por favor responde todas las 5 preguntas antes de evaluar.");
+        return;
+      }
+
+      let totalPoints = 0;
+      inputs.forEach(input => {
+        totalPoints += parseInt(input.value);
+      });
+
+      let icfesScore = totalPoints;
+      let level = "A1 - Principiante";
+      let feedback = "Sigue practicando para consolidar tus conocimientos en vocabulario y estructuras.";
+
+      if (icfesScore >= 400) {
+        level = "B1 - Pre-Intermedio Alto (Dominio Sobresaliente)";
+        feedback = "¡Excelente desempeño! Demuestras una excelente comprensión lectora y dominio gramatical según estándares ICFES.";
+      } else if (icfesScore >= 300) {
+        level = "A2 - Intermedio Básico";
+        feedback = "¡Buen trabajo! Tienes bases sólidas, pero revisa las recomendaciones y modales para subir a B1.";
+      }
+
+      const isQuiz1 = formId === 'form-icfes-1';
+      document.getElementById(isQuiz1 ? 'score-val-1' : 'score-val-2').innerText = `${icfesScore} / 500`;
+      document.getElementById(isQuiz1 ? 'level-val-1' : 'level-val-2').innerText = `Nivel MCER: ${level}`;
+      document.getElementById(isQuiz1 ? 'feedback-val-1' : 'feedback-val-2').innerText = feedback;
+      
+      document.getElementById(resultId).style.display = 'block';
+      document.getElementById(resultId).scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
